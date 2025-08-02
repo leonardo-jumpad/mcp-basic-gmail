@@ -1,0 +1,1 @@
+LangChain é uma estrutura para desenvolver aplicativos alimentados por modelos de linguagem, com foco na composição de prompts, agentes e cadeias de chamadas de LLMs.

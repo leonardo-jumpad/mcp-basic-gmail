@@ -22,6 +22,14 @@ source .venv/bin/activate
 pip install langchain langgraph langsmith openai langchain-openai python-dotenv
 ```
 
+# Instalando as dependências:
+
+Para instalar todas as dependências listadas no arquivo requirements.txt, use o seguinte comando no terminal:
+
+```bash
+pip install -r requirements.txt
+```
+
 ## como gerar o requirements.txt
 
 ```bash
@@ -54,6 +62,12 @@ Para que os LLMs resolvam problemas complexos, existem três estratégias princi
 -   **Chain of Thought (Cadeia de Pensamento)**: O modelo é incentivado a gerar **etapas intermediárias de raciocínio** antes de chegar à resposta final, melhorando a resolução de tarefas complexas de raciocínio.
 -   **ReAct (Reasoning + Acting)**: Combina raciocínio com ação, agindo em ciclos que **alternam entre descrever o que está fazendo e executando a ação**, podendo chamar "tools".
 -   **Tree of Thoughts (Árvore de Pensamentos)**: Uma evolução do Chain of Thought, onde o modelo considera **múltiplas possibilidades**, ramificando as decisões como uma árvore. Ajuda a criar diferentes caminhos, avaliar cada um e escolher o melhor para problemas complexos.
+
+| Estratégia       | Quando usar                                        | Benefício principal             |
+| ---------------- | -------------------------------------------------- | ------------------------------- |
+| Chain of Thought | Problemas com cálculo, lógica, etapas              | Clareza no raciocínio           |
+| ReAct            | Acesso a ferramentas externas (ex: arquivos, APIs) | Raciocínio + ação externa       |
+| Tree of Thoughts | Explorar várias soluções antes de decidir          | Avaliação de múltiplos caminhos |
 
 ### Termos e Conceitos Importantes:
 
