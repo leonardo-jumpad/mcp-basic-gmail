@@ -18,10 +18,6 @@ source .venv/bin/activate
 
 .venv\Scripts\activate.bat
 
-```bash
-pip install langchain langgraph langsmith openai langchain-openai python-dotenv
-```
-
 # Instalando as dependências:
 
 Para instalar todas as dependências listadas no arquivo requirements.txt, use o seguinte comando no terminal:
@@ -29,6 +25,14 @@ Para instalar todas as dependências listadas no arquivo requirements.txt, use o
 ```bash
 pip install -r requirements.txt
 ```
+
+ou
+
+```bash
+pip install langchain langgraph langsmith openai langchain-openai python-dotenv guardrails-ai
+```
+
+pip install langchain-community
 
 ## como gerar o requirements.txt
 
