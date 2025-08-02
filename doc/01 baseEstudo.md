@@ -1,34 +1,8 @@
-#### Passo 1 — Instalar dependências mínimas:
+## Agentes de IA: Conceitos, Aplicações e Futuro
 
-# Crie o ambiente virtual
+O texto fornece uma visão abrangente sobre os agentes de IA, softwares autônomos que realizam tarefas tomando decisões com base em interações ambientais e com outros agentes ou humanos. Ele explica como funcionam esses agentes, desde o planejamento e execução até a aprendizagem, destacando a utilização de Grandes Modelos de Linguagem (LLMs) e a capacidade de integrar ferramentas externas. O material explora conceitos chave como "guard rails" (mecanismos de segurança), orquestração (coordenação entre múltiplos agentes) e memória (de curto e longo prazo), que são fundamentais para o design e funcionamento desses sistemas. Além disso, o texto detalha tipos comuns de agentes (reflexivos, baseados em modelo, baseados em utilidade, baseados em meta, de aprendizado e hierárquicos), oferece dicas para seu design, e apresenta ferramentas e protocolos relevantes para a comunicação entre eles. Por fim, são discutidos casos de uso reais e os desafios atuais na implementação dos agentes de IA.
 
-python3.10 -m venv .venv
-
-# Ative o ambiente virtual
-
-# No Linux/macOS:
-
-source .venv/bin/activate
-
-# No Windows (PowerShell):
-
-.venv\Scripts\Activate.ps1
-
-# No Windows (CMD):
-
-.venv\Scripts\activate.bat
-
-```bash
-pip install langchain langgraph langsmith openai langchain-openai python-dotenv
-```
-
-## como gerar o requirements.txt
-
-```bash
-pip freeze > requirements.txt
-```
-
-# Conceitos chave
+Com certeza! Para um desenvolvedor, entender os conceitos chave sobre agentes de IA e o Model Context Protocol (MCP) é fundamental. Abaixo estão os principais conceitos e suas explicações detalhadas, baseadas nas suas fontes:
 
 ### Agentes de IA (AI Agents)
 
