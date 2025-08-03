@@ -26,19 +26,49 @@ Para instalar todas as dependências listadas no arquivo requirements.txt, use o
 pip install -r requirements.txt
 ```
 
-ou
+Principais bibliotecas usadas:
 
 ```bash
-pip install langchain langgraph langsmith openai langchain-openai python-dotenv guardrails-ai
+ langchain langgraph langsmith openai langchain-openai langchain-community python-dotenv guardrails-ai
 ```
 
-pip install langchain-community
+Principais bibliotecas utilizadas:
 
-## como gerar o requirements.txt
+-   LangChain e LangGraph — para criação de agentes e orquestração de fluxos com LLMs.
+-   OpenAI e LiteLLM — acesso e compatibilidade com múltiplos provedores de IA.
+-   Guardrails AI — para validação e controle das saídas dos modelos.
+-   Pydantic e Dataclasses JSON — para modelagem e validação estruturada de dados.
+-   HTTPX, Aiohttp e PyGithub — integração com APIs REST e GitHub.
+-   SQLAlchemy — ORM para banco de dados.
+-   OpenTelemetry — rastreamento e observabilidade.
 
-```bash
-pip freeze > requirements.txt
-```
+# Objetivo
+
+Esta base tem como finalidade proporcionar um entendimento introdutório e estruturado dos conceitos básicos relacionados ao uso de inteligência artificial aplicada, com foco em estratégias de LLMs, orquestração de agentes, engenharia de contexto e protocolos de modelo. A estrutura organizada por temas facilita o aprendizado progressivo e prático.
+
+# Estrutura
+
+├── app
+│ ├── contextEngineeringConcept
+│ ├── guardrailsAI
+│ ├── langchain
+│ ├── langgraph
+│ ├── llm_strategies
+│ │ └── **pycache**
+│ ├── modelContextProtocol
+│ │ ├── githubv1
+│ │ └── githubv2
+│ └── orchestration
+├── doc
+│ ├── image
+│ ├── 01 baseEstudo.md
+│ ├── 02 langchain.md
+│ ├── 03 langgraph.md
+│ ├── 04 llm_strategies.md
+│ ├── 05 Orchestration.md
+│ ├── 06 Types of Agents.md
+│ ├── 07 Model Context Protocol.md
+│ ├── 08 Context engineering concept.md
 
 # Conceitos chave
 
@@ -121,3 +151,32 @@ Apesar do avanço, há desafios:
 -   **Curva de Aprendizado**: Criar agentes bem estruturados exige diversos conhecimentos em LLMs, engenharia de prompt, APIs externas e design de sistemas autônomos.
 
 Esses são os conceitos chave para um desenvolvedor entender os agentes de IA e como o MCP se encaixa nesse ecossistema, permitindo interações padronizadas entre eles e outras ferramentas.
+
+## MCP
+
+![Descrição da imagem](doc/image/mcpgif.gif)
+
+## Context Engineering
+
+![Descrição da imagem](doc/image/contextengineering.png)
+
+A imagem mostra o fluxo de **Context Engineering** para sistemas de IA baseados em agentes com memória.
+
+1. **Usuário envia Input** → inicia o processo.
+2. **Agente interpreta o Input** e usa:
+3. **RAG (Retrieval-Augmented Generation)** para buscar informações externas.
+4. **Ferramentas externas (Action Tools)** para executar ações ou acessar dados.
+5. **Prompt é atualizado** com os resultados obtidos.
+6. **Resposta é gerada** para o usuário.
+7. **Histórico da conversa (Short-Term Memory)** armazena o contexto imediato.
+8. **Memória de Longo Prazo (MCP Servers, Databases)** recebe dados relevantes para consultas futuras.
+
+As cores indicam os tipos de dados: entrada do usuário, raciocínio do agente, uso de ferramentas, contexto RAG, informações do usuário e histórico da conversa.
+
+### Extras:
+
+## Como gerar o requirements.txt
+
+```bash
+pip freeze > requirements.txt
+```
