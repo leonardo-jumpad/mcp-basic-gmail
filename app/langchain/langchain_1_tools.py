@@ -37,5 +37,5 @@ agente = initialize_agent(
 )
 
 # Teste com uma pergunta que o LLM vai passar para a ferramenta
-resposta = agente.run("Qual o resultado de 8 * (2 + 3)?")
+resposta = agente.invoke("Qual o resultado de 8 * (2 + 3)?")
 print(resposta)

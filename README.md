@@ -1,53 +1,10 @@
-#### Passo 1 — Instalar dependências mínimas:
-
-# Crie o ambiente virtual
-
-python3.10 -m venv .venv
-
-# Ative o ambiente virtual
-
-# No Linux/macOS:
-
-source .venv/bin/activate
-
-# No Windows (PowerShell):
-
-.venv\Scripts\Activate.ps1
-
-# No Windows (CMD):
-
-.venv\Scripts\activate.bat
-
-# Instalando as dependências:
-
-Para instalar todas as dependências listadas no arquivo requirements.txt, use o seguinte comando no terminal:
-
-```bash
-pip install -r requirements.txt
-```
-
-Principais bibliotecas usadas:
-
-```bash
- langchain langgraph langsmith openai langchain-openai langchain-community python-dotenv guardrails-ai
-```
-
-Principais bibliotecas utilizadas:
-
--   LangChain e LangGraph — para criação de agentes e orquestração de fluxos com LLMs.
--   OpenAI e LiteLLM — acesso e compatibilidade com múltiplos provedores de IA.
--   Guardrails AI — para validação e controle das saídas dos modelos.
--   Pydantic e Dataclasses JSON — para modelagem e validação estruturada de dados.
--   HTTPX, Aiohttp e PyGithub — integração com APIs REST e GitHub.
--   SQLAlchemy — ORM para banco de dados.
--   OpenTelemetry — rastreamento e observabilidade.
-
 # Objetivo
 
 Esta base tem como finalidade proporcionar um entendimento introdutório e estruturado dos conceitos básicos relacionados ao uso de inteligência artificial aplicada, com foco em estratégias de LLMs, orquestração de agentes, engenharia de contexto e protocolos de modelo. A estrutura organizada por temas facilita o aprendizado progressivo e prático.
 
 # Estrutura
 
+```
 ├── app
 │ ├── contextEngineeringConcept
 │ ├── guardrailsAI
@@ -69,6 +26,15 @@ Esta base tem como finalidade proporcionar um entendimento introdutório e estru
 │ ├── 06 Types of Agents.md
 │ ├── 07 Model Context Protocol.md
 │ ├── 08 Context engineering concept.md
+```
+
+## Sujestão de análise:
+
+-   1-langchain
+-   2-langgraph
+-   3-llm_strategies
+-   4-guardrailsAI
+-   5-contextEngineeringConcept
 
 # Conceitos chave
 
@@ -173,10 +139,96 @@ A imagem mostra o fluxo de **Context Engineering** para sistemas de IA baseados 
 
 As cores indicam os tipos de dados: entrada do usuário, raciocínio do agente, uso de ferramentas, contexto RAG, informações do usuário e histórico da conversa.
 
-### Extras:
+# Passo 1 — Instalar dependências mínimas:
 
-## Como gerar o requirements.txt
+### Crie o ambiente virtual
+
+python3.10 -m venv .venv
+
+### Ative o ambiente virtual
+
+#### No Linux/macOS:
+
+source .venv/bin/activate
+
+#### No Windows (PowerShell):
+
+.venv\Scripts\Activate.ps1
+
+#### No Windows (CMD):
+
+.venv\Scripts\activate.bat
+
+### Instalando as dependências:
+
+Para instalar todas as dependências listadas no arquivo requirements.txt, use o seguinte comando no terminal:
+
+```bash
+pip install -r requirements.txt
+```
+
+Executar:
+
+```bash
+python app/main.py
+```
+
+Principais bibliotecas usadas:
+
+```bash
+ pip install langchain langgraph langsmith openai langchain-openai langchain-community python-dotenv guardrails-ai
+```
+
+Principais bibliotecas utilizadas:
+
+-   LangChain e LangGraph — para criação de agentes e orquestração de fluxos com LLMs.
+-   OpenAI e LiteLLM — acesso e compatibilidade com múltiplos provedores de IA.
+-   Guardrails AI — para validação e controle das saídas dos modelos.
+-   Pydantic e Dataclasses JSON — para modelagem e validação estruturada de dados.
+-   HTTPX, Aiohttp e PyGithub — integração com APIs REST e GitHub.
+-   SQLAlchemy — ORM para banco de dados.
+-   OpenTelemetry — rastreamento e observabilidade.
+
+#### Passo 2 — configurar o .env:
+
+```
+OPENAI_API_KEY=
+# MCP GITHUB
+GITHUB_TOKEN=
+GITHUB_USERNAME=
+GITHUB_REPO=
+```
+
+#### Passo 3 — Analizar cada código:
+
+Sequência sugerida:
+
+Inicia-se em main.py
+
+Depois siga os diretórios:
+
+-   1-langchain
+-   2-langgraph
+-   3-llm_strategies
+-   4-guardrailsAI
+-   5-contextEngineeringConcept
+
+Executar:
+
+```bash
+python app/main.py
+```
+
+## Extras:
+
+### Como gerar o requirements.txt
 
 ```bash
 pip freeze > requirements.txt
+```
+
+### Desativar o venv
+
+```bash
+deactivate
 ```
