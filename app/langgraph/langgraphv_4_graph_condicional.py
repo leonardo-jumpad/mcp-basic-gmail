@@ -54,3 +54,10 @@ entrada2 = {"mensagem": "O que é LangGraph?"}
 
 print("Teste 1:", graph.invoke(entrada1)["mensagem"])
 print("Teste 2:", graph.invoke(entrada2)["mensagem"])
+
+
+# Quando você chama:
+# graph.invoke({"mensagem": "Oi, tudo bem?"})
+# O grafo inicia no nó "classificar", que classifica a mensagem como "saudacao".
+# O fluxo segue para o nó "saudacao", que responde com a mensagem de saudação.
+# O fluxo termina, e a resposta é retornada.

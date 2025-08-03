@@ -1,1 +1,8 @@
-LangChain é uma estrutura para desenvolver aplicativos alimentados por modelos de linguagem, com foco na composição de prompts, agentes e cadeias de chamadas de LLMs.
+1. LangChain é uma biblioteca que ajuda a conectar modelos de linguagem com dados externos, como arquivos, APIs e bancos de dados.
+
+2. Com LangChain, você pode criar agentes inteligentes que tomam decisões e usam ferramentas para responder perguntas.
+
+3. Ele é usado para criar aplicações como assistentes pessoais, chatbots e sistemas de busca baseados em IA.
+
+# Prompt para atualizar esse conteúdo:
+Atualize essas definições com exemplos reais de uso da LangChain em projetos de automação de atendimento ao cliente.
