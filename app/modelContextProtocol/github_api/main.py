@@ -1,4 +1,4 @@
-# mcp_github.py
+# api
 
 from github import Github
 import os
