@@ -90,4 +90,4 @@ if __name__ == "__main__":
 # Agent → coordena tudo e dá a resposta.
 # Adicionar memória → exemplo: adicionar memória: Claude é um modelo da Anthropic.
 
-(User → Prompt → Agent → RAG → Tools → Answer → Memories).
+# (User → Prompt → Agent → RAG → Tools → Answer → Memories).

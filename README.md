@@ -18,6 +18,7 @@ Esta base tem como finalidade proporcionar um entendimento introdutório e estru
 │ └── orchestration
 ├── doc
 │ ├── image
+│ ├── Diagram.drawio
 │ ├── 01 baseEstudo.md
 │ ├── 02 langchain.md
 │ ├── 03 langgraph.md
