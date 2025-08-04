@@ -1,389 +1,296 @@
-Claro! Vamos criar **um exemplo simples e fácil de entender** de como funcionaria o **Model Context Protocol (MCP)** na prática.
-
-> 🧠 **Ideia principal**: um agente (uma IA ou LLM) recebe uma pergunta do usuário, percebe que precisa de uma calculadora externa (ferramenta), e a aciona via **MCP** para obter a resposta.
-
----
-
-### ✅ Contexto do exemplo:
-
-Você pergunta:
-🗣️ _"Quanto é 20% de 150?"_
-
-A LLM não calcula diretamente, mas envia essa pergunta para uma ferramenta chamada **CalculadoraDePorcentagem**, usando uma **mensagem no formato MCP**, e depois te dá a resposta.
-
----
-
-### 📦 Estrutura simplificada do MCP (em Python simulado)
-
-```python
-# MCP SIMPLIFICADO - Exemplo didático
-
-def calculadora_de_porcentagem(data):
-    """Simula uma ferramenta externa chamada via MCP"""
-    valor = data.get("valor")
-    porcentagem = data.get("porcentagem")
-    resultado = (porcentagem / 100) * valor
-    return {
-        "resultado": resultado,
-        "detalhes": f"{porcentagem}% de {valor} é {resultado}"
-    }
-
-# ===== AGENTE COM SUPORTE A MCP =====
-
-def agente_mcp(pergunta):
-    """Agente que sabe quando invocar ferramentas externas via 'MCP'"""
-
-    # Entendimento simples da pergunta
-    if "porcento de" in pergunta:
-        # Extração manual dos dados (simples para o exemplo)
-        partes = pergunta.lower().replace("%", "").split(" de ")
-        porcentagem = float(partes[0].split()[-1])
-        valor = float(partes[1])
-
-        # Comunicação via "MCP" - enviando contexto padronizado
-        mensagem_mcp = {
-            "tool": "CalculadoraDePorcentagem",
-            "input": {
-                "porcentagem": porcentagem,
-                "valor": valor
-            }
-        }
-
-        # Chamada simulada à ferramenta via protocolo
-        resposta = calculadora_de_porcentagem(mensagem_mcp["input"])
-        return resposta["detalhes"]
-
-    else:
-        return "Não entendi sua pergunta."
-
-# ===== USO =====
-resposta = agente_mcp("Quanto é 20% de 150?")
-print("🤖 Resposta:", resposta)
-```
-
----
-
-### 🧪 Saída do código:
-
-```
-🤖 Resposta: 20.0% de 150.0 é 30.0
-```
-
----
-
-### 🧩 O que você aprendeu:
-
--   **O agente** entendeu o que você quer.
--   Ele formatou a informação no **estilo MCP** (com `"tool"` e `"input"`).
--   **Chamou uma ferramenta externa (calculadora)**.
--   **Recebeu o resultado** e entregou de volta ao usuário.
-
----
-
----
+# Guia do Model Context Protocol (MCP) - Versão Corrigida
 
 ## ✅ O que é **MCP** (Model Context Protocol)
 
-**MCP (Model Context Protocol)** é um protocolo open-source criado pela **Anthropic** para **padronizar como grandes modelos de linguagem (LLMs)** interagem com **ferramentas externas, APIs, bancos de dados e outros agentes**.
+**MCP (Model Context Protocol)** é um protocolo open-source criado pela **Anthropic** para **padronizar como grandes modelos de linguagem (LLMs)** se conectam com **ferramentas externas, APIs, bancos de dados e outros recursos**.
 
-### ✨ Benefícios:
+### ✨ Características principais:
 
--   **Padroniza** a forma como modelos pedem ajuda de ferramentas.
--   **Facilita a colaboração entre agentes**, mesmo que sejam de empresas diferentes.
--   Permite que **LLMs executem ações no mundo real**, como buscar dados ou acionar APIs.
+-   **Protocolo baseado em JSON-RPC 2.0**: Comunicação padronizada entre cliente e servidor
+-   **Transporte flexível**: Suporta stdio, HTTP e WebSocket
+-   **Tipagem rigorosa**: Schemas JSON bem definidos para todas as mensagens
+-   **Handshake de inicialização**: Negociação de capabilities entre cliente e servidor
+-   **Gerenciamento de recursos**: Permite exposição de tools, resources e prompts
 
-> 📦 MCP define a **estrutura da mensagem**: o que está sendo pedido, quem vai responder, e o que fazer com o resultado.
-
----
-
-## 📘 Exemplo real: Quando usar MCP?
-
-Você pergunta para um chatbot:
-
-> 🧠 "Me diga se amanhã vai chover no Rio."
-
-O modelo percebe que precisa chamar uma API de previsão do tempo.
-
--   Com MCP, ele **formata esse pedido de forma padronizada**, como:
-
-```json
-{
-    "tool": "weather_api",
-    "input": {
-        "city": "Rio de Janeiro",
-        "date": "2025-08-03"
-    }
-}
-```
-
-Depois, o resultado da ferramenta retorna com algo como:
-
-```json
-{
-    "output": {
-        "forecast": "Chuva leve"
-    }
-}
-```
+> 📦 **Importante**: MCP não é apenas uma "estrutura de mensagem", mas um protocolo completo com especificações rigorosas para comunicação entre sistemas.
 
 ---
 
-## 🚀 Tutorial: Codificando e executando um agente com suporte MCP (exemplo simples)
+## 🔍 MCP Real vs. Simulações Educativas
+
+### ❌ **Simulação Educativa** (não é MCP real):
+
+```python
+# Exemplo didático - simula o conceito MCP
+mensagem_simulada = {
+    "tool": "calculadora",
+    "input": {"numero": 5}
+}
+```
+
+### ✅ **MCP Real**:
+
+```python
+# Implementação real usando biblioteca oficial MCP
+from mcp.server import Server
+from mcp.server.stdio import stdio_server
+from mcp.types import Tool, TextContent
+
+server = Server("meu-servidor")
+
+@server.list_tools()
+async def list_tools() -> list[Tool]:
+    return [Tool(name="calculadora", description="...")]
+
+@server.call_tool()
+async def call_tool(name: str, arguments: dict) -> list[TextContent]:
+    # Implementação da ferramenta
+    pass
+```
+
+---
+
+## 🚀 Tutorial: Implementação MCP Real
 
 ### ✅ Pré-requisitos:
 
--   Python instalado (versão 3.10+)
--   Ambiente virtual (opcional)
--   Editor de código (VS Code, por exemplo)
+-   Python 3.10+
+-   Biblioteca oficial MCP: `pip install mcp`
 
 ---
 
-### 📂 Estrutura do projeto
-
-```
-projeto_mcp/
-│
-├── main.py                  ← Agente principal
-├── tools/
-│   └── weather.py           ← Ferramenta externa simulada (como uma API)
-└── mcp/
-    └── executor.py          ← Lógica do MCP (como executa a ferramenta)
-```
-
----
-
-### 📄 Arquivo `tools/weather.py`
+### 📄 Exemplo: Servidor MCP com Calculadora
 
 ```python
-# Simula uma ferramenta externa que responde à previsão do tempo
+# servidor_calculadora.py
+import asyncio
+from mcp.server import Server
+from mcp.server.stdio import stdio_server
+from mcp.types import Tool, TextContent
 
-def previsao_do_tempo(input_data):
-    cidade = input_data.get("city")
-    data = input_data.get("date")
+# Criar servidor MCP
+server = Server("calculadora-server")
 
-    # Simula uma resposta
-    return {
-        "forecast": f"Chuva leve prevista para {cidade} no dia {data}."
-    }
-```
-
----
-
-### 📄 Arquivo `mcp/executor.py`
-
-```python
-# Executor MCP - invoca ferramentas com base no protocolo
-
-from tools.weather import previsao_do_tempo
-
-def mcp_execute(message):
-    tool = message.get("tool")
-    input_data = message.get("input")
-
-    if tool == "weather_api":
-        return {
-            "output": previsao_do_tempo(input_data)
-        }
-    else:
-        return {"error": "Ferramenta não reconhecida"}
-```
-
----
-
-### 📄 Arquivo `main.py`
-
-```python
-from mcp.executor import mcp_execute
-
-def agente(pergunta):
-    if "vai chover" in pergunta:
-        cidade = "Rio de Janeiro"
-        data = "2025-08-03"
-
-        mensagem_mcp = {
-            "tool": "weather_api",
-            "input": {
-                "city": cidade,
-                "date": data
+@server.list_tools()
+async def list_tools() -> list[Tool]:
+    """Lista as ferramentas disponíveis"""
+    return [
+        Tool(
+            name="calcular_porcentagem",
+            description="Calcula porcentagem de um valor",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "valor": {"type": "number", "description": "Valor base"},
+                    "porcentagem": {"type": "number", "description": "Porcentagem a calcular"}
+                },
+                "required": ["valor", "porcentagem"]
             }
-        }
-
-        resposta = mcp_execute(mensagem_mcp)
-        return resposta["output"]["forecast"]
-
-    return "Não entendi sua pergunta."
-
-# ==== EXECUTAR ====
-print("🤖", agente("Vai chover amanhã no Rio?"))
-```
-
----
-
-### 🧪 Como rodar:
-
-1. Crie as pastas e arquivos acima.
-2. No terminal, vá até a pasta do projeto:
-
-```bash
-cd projeto_mcp
-python3 main.py
-```
-
----
-
-### 📤 Saída esperada:
-
-```
-🤖 Chuva leve prevista para Rio de Janeiro no dia 2025-08-03.
-```
-
----
-
-## 💡 Explicando tudo de novo em resumo:
-
-| Componente         | O que faz                                                                          |
-| ------------------ | ---------------------------------------------------------------------------------- |
-| `main.py`          | É o **agente** (LLM ou IA) que entende a pergunta e decide qual ferramenta chamar. |
-| `mcp/executor.py`  | É o executor do protocolo MCP: **envia os dados para a ferramenta correta**.       |
-| `tools/weather.py` | É a **ferramenta externa simulada**, como se fosse uma API de clima.               |
-
----
-
-Próximo passo: expandir esse exemplo com chamadas reais a APIs, ou usando o LangChain para integrar com agentes inteligentes.
-
----
-
-# Exemplo MCP simples local (sem API)
-
-## Objetivo:
-
-Um agente que recebe uma pergunta, identifica qual ferramenta chamar, monta a mensagem MCP, envia para o executor que chama a função interna, e devolve a resposta.
-
----
-
-### 1. Ferramentas internas
-
-```python
-# tools.py
-
-def dobrar_numero(input_data):
-    numero = input_data.get("numero", 0)
-    resultado = numero * 2
-    return {"resultado": resultado}
-
-def inverter_texto(input_data):
-    texto = input_data.get("texto", "")
-    invertido = texto[::-1]
-    return {"resultado": invertido}
-```
-
----
-
-### 2. Executor MCP
-
-```python
-# mcp_executor.py
-from tools import dobrar_numero, inverter_texto
-
-def mcp_execute(message: dict) -> dict:
-    tool = message.get("tool")
-    input_data = message.get("input", {})
-
-    if tool == "dobrar_numero":
-        return {"output": dobrar_numero(input_data)}
-    elif tool == "inverter_texto":
-        return {"output": inverter_texto(input_data)}
-    else:
-        return {"error": "Ferramenta desconhecida."}
-```
-
----
-
-### 3. Agente que chama MCP
-
-```python
-# main.py
-from mcp_executor import mcp_execute
-
-def agente_mcp(pergunta: str):
-    if "dobrar" in pergunta:
-        # Exemplo: "Dobrar 5"
-        try:
-            numero = int(pergunta.split()[-1])
-        except:
-            return "Número inválido."
-
-        mensagem = {
-            "tool": "dobrar_numero",
-            "input": {"numero": numero}
-        }
-        resposta = mcp_execute(mensagem)
-        return f"O dobro de {numero} é {resposta['output']['resultado']}"
-
-    elif "inverter" in pergunta:
-        # Exemplo: "Inverter olá mundo"
-        texto = pergunta.replace("inverter", "").strip()
-        mensagem = {
-            "tool": "inverter_texto",
-            "input": {"texto": texto}
-        }
-        resposta = mcp_execute(mensagem)
-        return f"O texto invertido é: '{resposta['output']['resultado']}'"
-
-    else:
-        return "Não entendi a pergunta."
-
-if __name__ == "__main__":
-    perguntas = [
-        "Dobrar 10",
-        "Inverter Olá Mundo",
-        "Dobrar abc",
-        "Outra pergunta"
+        ),
+        Tool(
+            name="dobrar_numero",
+            description="Dobra um número",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "numero": {"type": "number", "description": "Número para dobrar"}
+                },
+                "required": ["numero"]
+            }
+        )
     ]
 
-    for p in perguntas:
-        print(f"Pergunta: {p}")
-        print("Resposta:", agente_mcp(p))
-        print()
+@server.call_tool()
+async def call_tool(name: str, arguments: dict) -> list[TextContent]:
+    """Executa a ferramenta solicitada"""
+
+    if name == "calcular_porcentagem":
+        valor = arguments["valor"]
+        porcentagem = arguments["porcentagem"]
+        resultado = (porcentagem / 100) * valor
+
+        return [TextContent(
+            type="text",
+            text=f"{porcentagem}% de {valor} é {resultado}"
+        )]
+
+    elif name == "dobrar_numero":
+        numero = arguments["numero"]
+        resultado = numero * 2
+
+        return [TextContent(
+            type="text",
+            text=f"O dobro de {numero} é {resultado}"
+        )]
+
+    else:
+        return [TextContent(
+            type="text",
+            text=f"Ferramenta '{name}' não encontrada"
+        )]
+
+async def main():
+    """Inicializa o servidor MCP via stdio"""
+    async with stdio_server() as streams:
+        await server.run(streams[0], streams[1])
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 ---
 
-## Como rodar?
+### 📄 Como usar o servidor MCP:
 
-1. Salve os 3 arquivos (`tools.py`, `mcp_executor.py`, `main.py`) na mesma pasta.
-2. Execute no terminal:
+1. **Salve o código** como `servidor_calculadora.py`
+2. **Execute o servidor**:
 
 ```bash
-python3 main.py
+python servidor_calculadora.py
+```
+
+3. **Conecte um cliente MCP** (como Claude Desktop) que pode descobrir e usar suas ferramentas
+
+---
+
+### 📄 Exemplo: Cliente MCP Simples
+
+```python
+# cliente_mcp.py
+import asyncio
+import json
+from mcp.client import Client
+from mcp.client.stdio import stdio_client
+
+async def usar_servidor_calculadora():
+    """Exemplo de cliente que usa o servidor MCP"""
+
+    # Conectar ao servidor via stdio
+    async with stdio_client() as streams:
+        client = Client("meu-cliente")
+
+        # Inicializar conexão
+        await client.initialize(streams[0], streams[1])
+
+        # Listar ferramentas disponíveis
+        tools = await client.list_tools()
+        print("Ferramentas disponíveis:")
+        for tool in tools:
+            print(f"- {tool.name}: {tool.description}")
+
+        # Usar ferramenta de porcentagem
+        resultado = await client.call_tool(
+            "calcular_porcentagem",
+            {"valor": 150, "porcentagem": 20}
+        )
+        print(f"Resultado: {resultado[0].text}")
+
+        # Usar ferramenta de dobrar número
+        resultado = await client.call_tool(
+            "dobrar_numero",
+            {"numero": 7}
+        )
+        print(f"Resultado: {resultado[0].text}")
+
+if __name__ == "__main__":
+    asyncio.run(usar_servidor_calculadora())
 ```
 
 ---
 
-## Saída esperada
+## 🔄 Estrutura de Mensagens MCP Real
 
+### Inicialização:
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "initialize",
+    "params": {
+        "protocolVersion": "2024-11-05",
+        "capabilities": {
+            "tools": {}
+        },
+        "clientInfo": {
+            "name": "meu-cliente",
+            "version": "1.0.0"
+        }
+    }
+}
 ```
-Pergunta: Dobrar 10
-Resposta: O dobro de 10 é 20
 
-Pergunta: Inverter Olá Mundo
-Resposta: O texto invertido é: 'odnuM álO'
+### Listar Ferramentas:
 
-Pergunta: Dobrar abc
-Resposta: Número inválido.
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 2,
+    "method": "tools/list"
+}
+```
 
-Pergunta: Outra pergunta
-Resposta: Não entendi a pergunta.
+### Chamar Ferramenta:
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 3,
+    "method": "tools/call",
+    "params": {
+        "name": "calcular_porcentagem",
+        "arguments": {
+            "valor": 150,
+            "porcentagem": 20
+        }
+    }
+}
 ```
 
 ---
 
-# Explicação simples
+## 📊 Comparação: Simulação vs. MCP Real
 
--   O agente identifica qual ferramenta chamar a partir da pergunta.
--   Cria a mensagem MCP (com nome da ferramenta e dados de entrada).
--   Passa para o executor MCP que sabe como chamar a função certa.
--   A função interna processa e retorna o resultado dentro do formato MCP.
--   O agente formata e responde ao usuário.
+| Aspecto                | Simulação Educativa       | MCP Real                          |
+| ---------------------- | ------------------------- | --------------------------------- |
+| **Protocolo**          | Estrutura personalizada   | JSON-RPC 2.0 padrão               |
+| **Transporte**         | Chamadas de função locais | stdio/HTTP/WebSocket              |
+| **Tipagem**            | Informal                  | Schemas JSON rigorosos            |
+| **Descoberta**         | Hard-coded                | `tools/list`, `resources/list`    |
+| **Error Handling**     | Básico                    | Códigos de erro padronizados      |
+| **Interoperabilidade** | Limitada ao código local  | Funciona com qualquer cliente MCP |
 
 ---
+
+## 🎯 Quando Usar Cada Abordagem
+
+### 📚 **Simulações Educativas** são úteis para:
+
+-   Aprender o conceito de agentes com ferramentas
+-   Prototipar rapidamente ideias
+-   Ensinar arquiteturas de software
+-   Demonstrações simples
+
+### 🏗️ **MCP Real** é necessário para:
+
+-   Integração com sistemas reais (Claude Desktop, etc.)
+-   Aplicações em produção
+-   Interoperabilidade entre diferentes ferramentas
+-   Padrões de segurança e confiabilidade
+
+---
+
+## 🔗 Recursos Adicionais
+
+-   **Documentação oficial**: [https://modelcontextprotocol.io](https://modelcontextprotocol.io)
+-   **Repositório GitHub**: [https://github.com/modelcontextprotocol](https://github.com/modelcontextprotocol)
+-   **Exemplos oficiais**: Verifique o repositório para servidores MCP de exemplo
+-   **Claude Desktop**: Suporte nativo para servidores MCP
+
+---
+
+## 💡 Resumo Final
+
+**MCP** é um protocolo completo e padronizado, não apenas uma "estrutura de mensagem". Para implementações reais, sempre use as bibliotecas oficiais e siga as especificações do protocolo.
+
+Os exemplos "simulados" neste documento servem apenas para fins educativos e ajudam a entender os conceitos, mas não são implementações MCP válidas para uso em produção.
